@@ -1,0 +1,12 @@
+[
+  {
+       "name": "AssetOwnershipCollection",
+       "policy": "AND('SocGenSecMSP.member', 'BroadridgeGlobalMSP.member')",
+       "requiredPeerCount": 0,
+       "maxPeerCount": 3,
+       "blockToLive":1000000
+  }
+
+]
+
+

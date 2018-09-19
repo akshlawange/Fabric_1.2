@@ -1,0 +1,9 @@
+	{"objectType" = "ASSETTOKEN",
+	"assetTokenIdentifier" = "ID1230392",
+	"instrumentID" = "N372912S9",        
+	"ownerParty" = "580510A1ED4CC36ECA24C3439E9B31430E0E6A12AA3311B2369F7878092D0A12"
+	"ownerAcct"  = "NAT21029"
+	"positionQty" = "1000000.00"
+	"currency"  = "USD"
+	"transferDateTime" = "04172018"
+	"activeInd" = "A" }
