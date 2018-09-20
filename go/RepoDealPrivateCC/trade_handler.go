@@ -88,12 +88,12 @@ func (t *tradeHandler) newTradeEntry(stub shim.ChaincodeStubInterface, tradeStru
 // updateTrade replaces the trade record row on the chaincode state table
 func (t *tradeHandler) updateTrade(stub shim.ChaincodeStubInterface, tradeStruct TradeDetails) error {
 	fmt.Println("###### RepoDealCC: function: updateTrade ")
-
+	collection := "RepoDealCollection"
 	tradeStruct.ObjectType = "TradeDetails"
 	fmt.Println("Existing Trade Input : ", tradeStruct.ProcessingSystemReference, tradeStruct.Version)
 	//Get Version Number from Query function. Expected to be set in the input.
 	compositeKey, _ := stub.CreateCompositeKey(tradeStruct.ObjectType, []string{tradeStruct.ProcessingSystemReference, strconv.Itoa(tradeStruct.Version)})
-	extJSONBytes, _ := stub.GetState(compositeKey)
+	extJSONBytes, _ := stub.GetPrivateData(collection,compositeKey)
 	var exTradeStruct TradeDetails
 	if string(extJSONBytes) != "" {
 		err := json.Unmarshal([]byte(extJSONBytes), &exTradeStruct)
@@ -104,7 +104,6 @@ func (t *tradeHandler) updateTrade(stub shim.ChaincodeStubInterface, tradeStruct
 		exTradeStruct.ActiveInd = "N"
 		exTradeStruct.DateTime = time.Now().UTC().String()
 		extJSONBytesNew, _ := json.Marshal(exTradeStruct)
-		collection := "RepoDealCollection"
 		fmt.Println("Existing Trade : ", string(compositeKey), string(extJSONBytesNew))
 		err = stub.PutPrivateData(collection,compositeKey, extJSONBytesNew)
 		if err != nil {
@@ -137,12 +136,12 @@ func (t *tradeHandler) deactivateTrade(stub shim.ChaincodeStubInterface, tradeSt
 
 	var err error
 	fmt.Println("###### RepoDealCC: function: deactivateTrade ")
-	
+	collection := "RepoDealCollection"	
 	tradeStruct.ObjectType = "TradeDetails"
 	fmt.Println("Existing Trade Input : ", tradeStruct.ProcessingSystemReference, tradeStruct.Version)
 	//Get Version Number from Query function. Expected to be set in the input.
 	compositeKey, _ := stub.CreateCompositeKey(tradeStruct.ObjectType, []string{tradeStruct.ProcessingSystemReference, strconv.Itoa(tradeStruct.Version)})
-	extJSONBytes, _ := stub.GetState(compositeKey)
+	extJSONBytes, _ := stub.GetPrivateData(collection,compositeKey)
 	var exTradeStruct TradeDetails
 	if string(extJSONBytes) != "" {
 		err = json.Unmarshal([]byte(extJSONBytes), &exTradeStruct)
@@ -153,7 +152,6 @@ func (t *tradeHandler) deactivateTrade(stub shim.ChaincodeStubInterface, tradeSt
 		exTradeStruct.ActiveInd = "N"
 		exTradeStruct.DateTime = time.Now().UTC().String()
 		extJSONBytesNew, _ := json.Marshal(exTradeStruct)
-		collection := "RepoDealCollection"
 		fmt.Println("Existing Trade : ", string(compositeKey), string(extJSONBytesNew))
 		err = stub.PutPrivateData(collection,compositeKey, extJSONBytesNew)
 		if err != nil {

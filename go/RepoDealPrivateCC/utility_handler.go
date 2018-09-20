@@ -369,7 +369,8 @@ func (t *utilityHandler) getQueryResultForQueryString(stub shim.ChaincodeStubInt
 	if queryString == "" {
 		return nil, errors.New("Incorrect number of arguments. Expecting queryString")
 	}
-	resultsIterator, err := stub.GetQueryResult(queryString)
+	collection := ""RepoDealCollection
+	resultsIterator, err := stub.GetPrivateDataQueryResult(collection,queryString)
 	if err != nil {
 		return nil, err
 	}

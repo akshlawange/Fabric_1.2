@@ -68,10 +68,10 @@ func (t *participantHandler) updateParticipants(stub shim.ChaincodeStubInterface
 	fmt.Println("###### RepoDealCC: function: updateParticipants ")
 	//Get Current State
 	partStruct.ObjectType = "ParticipantDetails"
-
+	collection:= "RepoDealCollection"
 	//Get Version Number from Query function. Expected to be set in the input.
 	compositeKey, _ := stub.CreateCompositeKey(partStruct.ObjectType, []string{partStruct.ParticipantID, partStruct.ProcessingSystemReference, strconv.Itoa(partStruct.Version)})
-	extJSONBytes, _ := stub.GetState(compositeKey)
+	extJSONBytes, _ := stub.GetPrivateData(collection,compositeKey)
 
 	var exPartyStruct ParticipantDetails
 	if string(extJSONBytes) != "" {
@@ -83,7 +83,6 @@ func (t *participantHandler) updateParticipants(stub shim.ChaincodeStubInterface
 		exPartyStruct.ActiveInd = "N"
 		exPartyStruct.DateTime = time.Now().UTC().String()
 		extJSONBytes, _ = json.Marshal(exPartyStruct)
-		collection := exPartyStruct.ParticipantID + "ParticipantCollection"
 
 		err = stub.PutPrivateData(collection,compositeKey, extJSONBytes)
 		if err != nil {
@@ -112,10 +111,11 @@ func (t *participantHandler) deactivateParticipants(stub shim.ChaincodeStubInter
 	fmt.Println("###### RepoDealCC: function: deactivateParticipants ")
 	//Get Current State
 	partStruct.ObjectType = "ParticipantDetails"
+	collection:= "RepoDealCollection"
 
 	//Get Version Number from Query function. Expected to be set in the input.
 	compositeKey, _ := stub.CreateCompositeKey(partStruct.ObjectType, []string{partStruct.ParticipantID, partStruct.ProcessingSystemReference, strconv.Itoa(partStruct.Version)})
-	extJSONBytes, _ := stub.GetState(compositeKey)
+	extJSONBytes, _ := stub.GetPrivateData(collection,compositeKey)
 
 	var exPartyStruct ParticipantDetails
 	if string(extJSONBytes) != "" {
@@ -123,7 +123,6 @@ func (t *participantHandler) deactivateParticipants(stub shim.ChaincodeStubInter
 		if err != nil {
 			fmt.Println("Error parsing JSON [%v]", err)
 		}
-		collection := "RepoDealCollection"
 		exPartyStruct.ActiveInd = "N"
 		exPartyStruct.DateTime = time.Now().UTC().String()
 		extJSONBytes, _ = json.Marshal(exPartyStruct)

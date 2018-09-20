@@ -87,12 +87,12 @@ func (t *collateralHandler) updateCollateralPosition(stub shim.ChaincodeStubInte
 
 	var err error
 	fmt.Println("###### RepoDealCC: function: updateCollateralPosition ")
-
+	collection := "RepoDealCollection"
 	collStruct.ObjectType = "CollateralDetails"
 
 	//Get Version Number from Query function. Expected to be set in the input.
 	compositeKey, _ := stub.CreateCompositeKey(collStruct.ObjectType, []string{collStruct.BorrowerParticipantID, collStruct.ProcessingSystemReference, collStruct.Instrument, strconv.Itoa(collStruct.Version)})
-	extJSONBytes, _ := stub.GetState(compositeKey)
+	extJSONBytes, _ := stub.GetPrivateData(collection,compositeKey)
 	fmt.Printf("Existing Collateral", string(compositeKey), string(extJSONBytes))
 
 	var exCollStruct CollateralDetails
@@ -105,7 +105,6 @@ func (t *collateralHandler) updateCollateralPosition(stub shim.ChaincodeStubInte
 		exCollStruct.ActiveInd = "N"
 		exCollStruct.DateTime = time.Now().UTC().String()
 		extJSONBytes, _ = json.Marshal(exCollStruct)
-		collection := "RepoDealCollection"
 		err = stub.PutPrivateData(collection,compositeKey, extJSONBytes)
 		if err != nil {
 			return errors.New("Error in updating Collateral state")
@@ -132,11 +131,11 @@ func (t *collateralHandler) updateCollateralPosition(stub shim.ChaincodeStubInte
 func (t *collateralHandler) deactivateCollateralPosition(stub shim.ChaincodeStubInterface, collStruct CollateralDetails) error {
 
 	fmt.Println("###### RepoDealCC: function: deactivateCollateralPosition ")
-
+	collection := "RepoDealCollection"
 	collStruct.ObjectType = "CollateralDetails"
 	//Get Version Number from Query function. Expected to be set in the input.
 	compositeKey, _ := stub.CreateCompositeKey(collStruct.ObjectType, []string{collStruct.BorrowerParticipantID, collStruct.ProcessingSystemReference, collStruct.Instrument, strconv.Itoa(collStruct.Version)})
-	extJSONBytes, _ := stub.GetState(compositeKey)
+	extJSONBytes, _ := stub.GetPrivateData(collection,compositeKey)
 
 	var exCollStruct CollateralDetails
 	if string(extJSONBytes) != "" {
@@ -148,7 +147,7 @@ func (t *collateralHandler) deactivateCollateralPosition(stub shim.ChaincodeStub
 		exCollStruct.ActiveInd = "N"
 		exCollStruct.DateTime = time.Now().UTC().String()
 		extJSONBytes, _ = json.Marshal(exCollStruct)
-		collection := "RepoDealCollection"
+		
 		err = stub.PutPrivateData(collection,compositeKey, extJSONBytes)
 		if err != nil {
 			return errors.New("Error in deactivating Collateral state")
