@@ -19,6 +19,8 @@ func NewUtilityHandler() *utilityHandler {
 	return &utilityHandler{}
 }
 
+collection := "RepoDealCollection"
+
 func (t *utilityHandler) readSingleJSON(stub shim.ChaincodeStubInterface, objectType string, attributes []string) ([]byte, error) {
 
 	fmt.Println("###### RepoDealCC: function: readSingleJSON ")
@@ -31,7 +33,7 @@ func (t *utilityHandler) readSingleJSON(stub shim.ChaincodeStubInterface, object
 	}
 
 	compositeKey, _ := stub.CreateCompositeKey(objectType, Key)
-	JSONBytes, _ := stub.GetState(compositeKey)
+	JSONBytes, _ := stub.GetPrivateData(collection,compositeKey)
 
 	fmt.Println("Retrived JSON :: [%s]", string(JSONBytes))
 
@@ -369,7 +371,6 @@ func (t *utilityHandler) getQueryResultForQueryString(stub shim.ChaincodeStubInt
 	if queryString == "" {
 		return nil, errors.New("Incorrect number of arguments. Expecting queryString")
 	}
-	collection := ""RepoDealCollection
 	resultsIterator, err := stub.GetPrivateDataQueryResult(collection,queryString)
 	if err != nil {
 		return nil, err
