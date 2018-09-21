@@ -53,7 +53,7 @@ func (t *utilityHandler) readMultiJSON(stub shim.ChaincodeStubInterface, objectT
 		}
 	}
 
-	keysIter, _ := stub.GetStateByPartialCompositeKey(objectType, partialKey)
+	keysIter, _ := stub.GetPrivateDataByPartialCompositeKey(collection,objectType, partialKey)
 	defer keysIter.Close()
 
 	//prefix := ""
@@ -99,7 +99,7 @@ func (t *utilityHandler) readMultiCollateralJSON(stub shim.ChaincodeStubInterfac
 	}
 
 	fmt.Println("Partial Key", partialKey)
-	keysIter, _ := stub.GetStateByPartialCompositeKey(objectType, partialKey)
+	keysIter, _ := stub.GetPrivateDataByPartialCompositeKey(collection,objectType, partialKey)
 	defer keysIter.Close()
 
 	for keysIter.HasNext() {
@@ -146,7 +146,7 @@ func (t *utilityHandler) readMultiCollateralJSONByParticipant(stub shim.Chaincod
 	}
 
 	fmt.Println("Partial Key", partialKey)
-	keysIter, _ := stub.GetStateByPartialCompositeKey(objectType, partialKey)
+	keysIter, _ := stub.GetPrivateDataByPartialCompositeKey(collection,objectType, partialKey)
 	defer keysIter.Close()
 
 	for keysIter.HasNext() {
@@ -192,7 +192,7 @@ func (t *utilityHandler) readMultiParticipantsJSON(stub shim.ChaincodeStubInterf
 	}
 
 	fmt.Println("Partial Key", partialKey)
-	keysIter, _ := stub.GetStateByPartialCompositeKey(objectType, partialKey)
+	keysIter, _ := stub.GetPrivateDataByPartialCompositeKey(collection,objectType, partialKey)
 	defer keysIter.Close()
 
 	for keysIter.HasNext() {
@@ -237,7 +237,7 @@ func (t *utilityHandler) readMultiTradeJSON(stub shim.ChaincodeStubInterface, ob
 	}
 
 	fmt.Println("Partial Key", partialKey)
-	keysIter, _ := stub.GetStateByPartialCompositeKey(objectType, partialKey)
+	keysIter, _ := stub.GetPrivateDataByPartialCompositeKey(collection,objectType, partialKey)
 	defer keysIter.Close()
 
 	for keysIter.HasNext() {
@@ -280,7 +280,7 @@ func (t *utilityHandler) readMultiTradeActiveJSON(stub shim.ChaincodeStubInterfa
 	}
 
 	fmt.Println("Partial Key", partialKey)
-	keysIter, _ := stub.GetStateByPartialCompositeKey(objectType, partialKey)
+	keysIter, _ := stub.GetPrivateDataByPartialCompositeKey(collection,objectType, partialKey)
 	defer keysIter.Close()
 
 	for keysIter.HasNext() {
@@ -322,7 +322,7 @@ func (t *utilityHandler) readTradeJSON(stub shim.ChaincodeStubInterface, objectT
 			partialKey = append(partialKey, attributes[cnt])
 		}
 	}
-	keysIter, _ := stub.GetStateByPartialCompositeKey(objectType, partialKey)
+	keysIter, _ := stub.GetPrivateDataByPartialCompositeKey(collection,objectType, partialKey)
 	defer keysIter.Close()
 
 	for keysIter.HasNext() {

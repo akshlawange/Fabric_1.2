@@ -47,6 +47,7 @@ func NewNotificationHandler() *notificationHandler {
 	return &notificationHandler{}
 }
 
+
 func (t *notificationHandler) newNotificationCapture(stub shim.ChaincodeStubInterface, notiStruct NotificationsDetails) ([]byte, error) {
 
 	fmt.Println("###### MultiPartyChaincode: function: newNotificationCapture ")
